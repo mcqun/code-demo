@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    .hide {
+        display: none;
+    }
+    </style>
+
+    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</head>
+
+<body>
+    <!-- 
+    <div id="text">
+    </div>
+    <input type="text" name="" id="input">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    $(function () {
+
+        $('#input').on('input change', function () {
+            $("#text").text($(this).val());
+        });
+
+    });
+    </script>
+ -->
+    
+    <div id="app">
+        <ul>
+            <li v-for="(item,key) in listData">
+                <!-- 查看模式 -->
+                <div class="view" :class="{hide:item.editMode}">
+                    <span>{{ item.name }}</span>
+                    <a href="javascript:;" title="" @click="onEdit(item)">编辑</a>
+                    <a href="javascript:;" title="" @click="onDel(key)">删除</a>
+                </div>
+                <!-- 编辑模式 -->
+                <div class="edit" :class="{hide:!item.editMode}">
+                    <input type="text" name="" class="edit-input" v-model="item.name" :class="{hide:!item.editMode}">
+                    <a href="javascript:;" title="" @click="onSave(item)">保存</a>
+                    <a href="javascript:;" title="" @click="onCancel(item)">取消</a>
+                </div>
+            </li>
+            <!-- 新增模式 -->
+            <li :class="{hide:!addMode}">
+                <input type="text" name="" class="edit-input" v-model="newName">
+                <a href="javascript:;" title="" @click="add">完成</a>
+                <a href="javascript:;" title="" @click="addMode = false">取消</a>
+            </li>
+        </ul>
+        <button type="button" @click="onAdd" :class="{hide:addMode}">新增</button>
+    </div>
+    <script>
+    var listData = [{
+        id: 1,
+        name: "name-1",
+        editMode: false
+    }, {
+        id: 2,
+        name: "name-2",
+        editMode: false
+    }, {
+        id: 3,
+        name: "name-3",
+        editMode: false
+    }, {
+        id: 4,
+        name: "name-4",
+        editMode: false
+    }, {
+        id: 5,
+        name: "name-5",
+        editMode: false
+    }];
+
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            listData,
+
+            newName: '',
+            addMode: false
+        },
+        methods: {
+            onAdd() {
+                this.newName = '';
+                this.addMode = true;
+            },
+            add() {
+                if(!this.newName) return;
+                this.addMode = false;
+                this.listData.push({
+                    id: 6,
+                    name: this.newName,
+                    editMode: false
+                });
+            },
+            onEdit(item) {
+                item.editMode = true;
+                item.oldData = item.name;
+            },
+            onSave(item) {
+                item.editMode = false;
+                console.log(this.listData);
+            },
+            onCancel(item) {
+                item.editMode = false;
+                item.name = item.oldData;
+            },
+            onDel(key) {
+                this.listData.splice(key, 1);
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>
